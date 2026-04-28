@@ -1,7 +1,7 @@
 import uuid
 from django.db import models
 
-class user(models.Model):
+class User(models.Model):
     class Role(models.TextChoices):
         GUEST = "guest", "Guest"
         HOST = "host", "Host"
