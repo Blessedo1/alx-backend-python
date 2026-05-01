@@ -16,6 +16,7 @@ class ConversationViewSet(viewsets.ModelViewSet):
     ViewSet for managing conversations.
     Users can only access conversations they participate in..
     """
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = ConversationSerializer
     def get_queryset(self):
         """
@@ -23,12 +24,13 @@ class ConversationViewSet(viewsets.ModelViewSet):
         """
         return Conversation.objects.filter(participants=self.request.user)
 
-class MessageViewset(viewsets.ModelViewSet):
+class MessageViewSet(viewsets.ModelViewSet):
     """
     ViewSet for managing messages.
     Users can only access messages from conversations they participate in.
     Implements pagination (20 messages per page) and filtering.
     """
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = MessageSerializer
     def get_queryset(self):
         """
@@ -39,4 +41,4 @@ class MessageViewset(viewsets.ModelViewSet):
         )
         return Message.objects.filter(
             conversation__in=user_conversations
-        )
+        ).order_by('-sent_at')
